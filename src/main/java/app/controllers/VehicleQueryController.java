@@ -1,0 +1,34 @@
+package app.controllers;
+
+import app.dto.VehicleQueryDTO;
+import app.services.VehicleQueryService;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+import java.util.UUID;
+
+@RestController
+@RequestMapping(value = "/api/vehicles")
+public class VehicleQueryController {
+
+    private VehicleQueryService vehicleQueryService;
+
+    public VehicleQueryController(VehicleQueryService vehicleQueryService) {
+        this.vehicleQueryService = vehicleQueryService;
+    }
+
+    @GetMapping
+    @ResponseStatus(HttpStatus.OK)
+    public ResponseEntity<List<VehicleQueryDTO>> listAllVehicles(){
+        return new ResponseEntity<>(vehicleQueryService.listAllVehicles(), HttpStatus.OK);
+    }
+
+    @GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseStatus(HttpStatus.OK)
+    public ResponseEntity<VehicleQueryDTO> getVehicle(@PathVariable(value = "id") UUID id){
+        return new ResponseEntity<>(vehicleQueryService.getVehicle(id), HttpStatus.OK);
+    }
+}
